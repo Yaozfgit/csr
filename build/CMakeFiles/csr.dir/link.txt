@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcsr.a CMakeFiles/csr.dir/src/matrix.cpp.o
+/usr/bin/ranlib libcsr.a
