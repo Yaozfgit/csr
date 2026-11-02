@@ -1,5 +1,0 @@
-/home/yaozf/projects/csr/build/CMakeFiles/csr.dir
-/home/yaozf/projects/csr/build/CMakeFiles/test_matrix.dir
-/home/yaozf/projects/csr/build/CMakeFiles/test.dir
-/home/yaozf/projects/csr/build/CMakeFiles/edit_cache.dir
-/home/yaozf/projects/csr/build/CMakeFiles/rebuild_cache.dir
