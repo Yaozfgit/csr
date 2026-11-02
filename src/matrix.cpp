@@ -30,3 +30,11 @@ void Matrix::print() const {
         std::printf("\n");
     }
 }
+
+double Matrix::max() const {
+    double m = data_[0];
+    for (std::size_t k = 1; k < data_.size(); ++k) {
+        if (data_[k] >m) m=data_[k];
+    }
+    return m;
+}
