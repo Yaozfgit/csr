@@ -49,5 +49,11 @@ int main() {
     }
 
     std::printf("all 4 tests passed!\n");
+
+    Matrix neg(2);
+    neg(0,0) = -5.0; neg(0,1) =-2.0;
+    neg(1,0) = -8.0; neg(1,1) =-3.0;
+    assert(neg.max() == -2.0);
+    std:: printf("test max passed!\n");
     return 0; 
 }
