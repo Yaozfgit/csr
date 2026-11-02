@@ -1,1 +1,4 @@
 build/
+*.o
+compile_commands.json
+.vscode/

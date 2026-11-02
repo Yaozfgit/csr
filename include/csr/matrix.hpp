@@ -15,6 +15,8 @@ class Matrix {
     //稀疏矩阵向量乘：y=A * x
     std::vector<double> multiply (const std::vector<double>& x) const;
 
+    void print() const; //打印成易读的矩阵格式，用于调试
+
     std::size_t size() const{ return n_; }   //内联小函数直接写在头文件里
 
     private:

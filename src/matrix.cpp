@@ -22,3 +22,11 @@ std::vector<double> Matrix::multiply(const std::vector<double>& x) const {
     return y;
 }
 
+void Matrix::print() const {
+    for (std::size_t i = 0; i<n_; ++i) {
+        for (std::size_t j = 0; j<n_; ++j) {
+            std::printf ("%8.3f ", data_[i*n_+j]);
+        }
+        std::printf("\n");
+    }
+}
