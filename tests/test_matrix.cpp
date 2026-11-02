@@ -55,5 +55,11 @@ int main() {
     neg(1,0) = -8.0; neg(1,1) =-3.0;
     assert(neg.max() == -2.0);
     std:: printf("test max passed!\n");
+
+    Matrix one(1);
+    one(0,0) = 3.0;
+    auto y1 = one.multiply(std::vector<double>{2.0});
+    assert(y1[0]== 6.0);
+    
     return 0; 
 }
