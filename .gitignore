@@ -1,4 +1,5 @@
 build/
 *.o
 compile_commands.json
-.vscode/
+.vscode/Testing
+Testing/
