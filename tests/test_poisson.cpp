@@ -67,5 +67,29 @@ TEST(LinalgTest, ResidualSmall) {
         double r = 0;
         for (int j = 0; j<3; ++j) r +=A(i,j)*x[j];
         EXPECT_NEAR(r-b[i], 0.0, 1e-10);
+    }    
+}
+
+//C：端到端 —— 组装、设右端项、求解、与精确解比对
+TEST(PoissonTest, SolvePoisson) {
+    const std::size_t n= 100;
+    CSRMatrix A_csr = build_poisson(n);
+    Matrix A_dense(n);    //CSR→dense之间转换
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j<n; ++j)
+            A_dense(i,j) = A_csr.at(i,j);
+
+    std::vector<double> b(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        double x = static_cast<double>(i+1)/(n+1);
+        b[i] = M_PI*M_PI*std::sin(M_PI*x);
     }
+    auto u = gauss_solve(A_dense, b);
+    
+    double max_err = 0.0;
+    for (std::size_t i = 0; i < n; ++i) {
+        double x = static_cast<double>(i+1)/(n+1);
+        max_err = std::max(max_err, std::abs(u[i]-std::sin(M_PI*x)));
+    }
+    EXPECT_LT(max_err, 1e-2);  //h=0.01，那么差分误差O(h^2)=1e-4量级
 }
