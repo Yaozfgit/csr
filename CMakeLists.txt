@@ -5,7 +5,7 @@ set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #库本体
-add_library(csr src/matrix.cpp src/csr_matrix.cpp src/poisson.cpp)
+add_library(csr src/matrix.cpp src/csr_matrix.cpp src/poisson.cpp src/linalg.cpp)
 target_include_directories(csr PUBLIC include)
 
 #---GoogleTest (FetchContent 方式) ----
