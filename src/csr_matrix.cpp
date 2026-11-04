@@ -35,6 +35,14 @@ double CSRMatrix::values_at(std::size_t k) const {
     return values_[k];
 }
 
+double CSRMatrix::at(std::size_t i, std::size_t j) const {
+    if (i >= n_) throw std::out_of_range ("row index");
+    for (std::size_t k=row_ptr_[i]; k<row_end(i); ++k) {
+        if (col_idx_[k]==j) return values_[k];
+    }
+    return 0.0;
+}
+
 void CSRMatrix::insert(std::size_t i, std::size_t j, double v) {
     if (i < current_row_ || j >= n_)
        throw std::invalid_argument("insert must be in row order");
