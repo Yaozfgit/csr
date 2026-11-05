@@ -1,4 +1,4 @@
-#include "csr/poisson.hpp"
+#include <csr/poisson.hpp>
 
 CSRMatrix build_poisson(std::size_t n) {
     CSRMatrix A(n);

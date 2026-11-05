@@ -1,4 +1,5 @@
-#include "csr/csr_matrix.hpp"
+#include <csr/csr_matrix.hpp>
+#include <stdexcept>
 
 CSRMatrix::CSRMatrix(std::size_t n) : n_(n), current_row_(0), row_ptr_{0} {}
 std::size_t CSRMatrix::row_end(std::size_t i) const {

@@ -5,7 +5,7 @@ set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #库本体
-add_library(csr src/matrix.cpp src/csr_matrix.cpp src/poisson.cpp src/linalg.cpp)
+add_library(csr src/matrix.cpp src/csr_matrix.cpp src/poisson.cpp src/linalg.cpp src/grid.cpp)
 target_include_directories(csr PUBLIC include)
 
 #---GoogleTest (FetchContent 方式) ----
@@ -26,10 +26,13 @@ add_executable(test_matrix tests/test_matrix.cpp)
 add_executable(test_csr_matrix tests/test_csr_matrix.cpp)
 add_executable(test_poisson tests/test_poisson.cpp)
 add_executable(test_convergence tests/test_convergence.cpp)
+add_executable(test_grid tests/test_grid.cpp)
+
 target_link_libraries(test_matrix PRIVATE csr GTest::gtest_main)
 target_link_libraries(test_csr_matrix PRIVATE csr GTest::gtest_main)
 target_link_libraries(test_poisson PRIVATE csr GTest::gtest_main)
 target_link_libraries(test_convergence PRIVATE csr GTest::gtest_main)
+target_link_libraries(test_grid PRIVATE csr GTest::gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(test_matrix test_csr_matrix test_poisson test_convergence)
+gtest_discover_tests(test_matrix test_csr_matrix test_poisson test_convergence test_grid)

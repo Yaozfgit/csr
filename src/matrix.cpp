@@ -1,7 +1,7 @@
-#include "csr/matrix.hpp"
-
-//成员变量初始化，成员n_初始化为n,data_初始化为n*n个0 
-Matrix::Matrix(std::size_t n): n_(n), data_ (n * n, 0.0){}  
+#include <csr/matrix.hpp>
+#include <stdexcept>
+#include <iostream>
+#include <cstddef>
 
 double& Matrix::operator()(std::size_t i, std::size_t j){
     if (i >= n_ || j>= n_) throw std::out_of_range("Matrix index out of range");

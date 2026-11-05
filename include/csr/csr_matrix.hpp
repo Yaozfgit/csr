@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <cstddef>
-#include <stdexcept>
 
 class CSRMatrix {
 public:
