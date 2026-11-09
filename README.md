@@ -51,3 +51,24 @@ n= 2048  err=1.959e-07  order=1.999
 - 分支管理：一个任务一个分支，merge 后删除
 - 测试设计：分支覆盖选抽检点；每条断言须贡献新信息
 - 数值验证：用收敛阶（数学性质）而非逐点比对验收代码
+
+
+2026.11.09
+# CSR — 一维双曲守恒律求解器（学习工程）
+
+## 这是什么
+一维有限体积求解库：线性对流方程（Rusanov 通量）、泊松方程（P3 中）。
+核心类：Grid1D（均匀网格）、LinearAdvection（推进器）、rusanov_flux（数值通量）。
+
+## 怎么构建与验收
+cmake -S . -B build
+cmake --build build
+cd build && ctest && cd ..
+
+## 数学性质如何被验证
+- 通量三条性质（守恒形式/镜像对称/符号齐次）：test_flux
+- 解的三条性质（质量守恒/整周期回位/CFL 防护）：test_advection
+- 守恒性容差 1e-12（机器精度量级）；回位测试同时给出数值耗散证据
+演示：./build/advect_demo 200 0.9
+
+数值实验记录（Rusanov 基线 vs MUSCL）：见 docs/muscl_convergence.md

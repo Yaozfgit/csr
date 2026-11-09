@@ -29,20 +29,35 @@ enable_testing()
 
 #可执行文件：薄薄的一层入口
 add_executable(test_matrix tests/test_matrix.cpp)
-add_executable(test_csr_matrix tests/test_csr_matrix.cpp)
-add_executable(test_poisson tests/test_poisson.cpp)
-add_executable(test_convergence tests/test_convergence.cpp)
-add_executable(test_grid tests/test_grid.cpp)
-add_executable(test_flux tests/test_flux.cpp)
-add_executable(test_advection tests/test_advection.cpp)
-
 target_link_libraries(test_matrix PRIVATE csr GTest::gtest_main)
+add_test(NAME matrix_tests COMMAND test_matrix)
+
+add_executable(test_csr_matrix tests/test_csr_matrix.cpp)
 target_link_libraries(test_csr_matrix PRIVATE csr GTest::gtest_main)
+add_test(NAME csr_matrix_tests COMMAND test_csr_matrix)
+
+add_executable(test_poisson tests/test_poisson.cpp)
 target_link_libraries(test_poisson PRIVATE csr GTest::gtest_main)
+add_test(NAME poisson_tests COMMAND test_poisson)
+
+add_executable(test_convergence tests/test_convergence.cpp)
 target_link_libraries(test_convergence PRIVATE csr GTest::gtest_main)
+add_test(NAME convergence_tests COMMAND test_convergence)
+
+add_executable(test_grid tests/test_grid.cpp)
 target_link_libraries(test_grid PRIVATE csr GTest::gtest_main)
+add_test(NAME grid_tests COMMAND test_grid)
+
+add_executable(test_flux tests/test_flux.cpp)
 target_link_libraries(test_flux PRIVATE csr GTest::gtest_main)
+add_test(NAME flux_tests COMMAND test_flux)
+
+add_executable(test_advection tests/test_advection.cpp)
 target_link_libraries(test_advection PRIVATE csr GTest::gtest_main)
+add_test(NAME advection_tests COMMAND test_advection)
+
+add_executable(advect_demo drivers/advect_demo.cpp)
+target_link_libraries(advect_demo PRIVATE csr)
 
 include(GoogleTest)
 gtest_discover_tests(test_matrix 
