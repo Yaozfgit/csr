@@ -20,6 +20,6 @@ TEST(FluxTest, SignHomogeneity) {
 
 // F3-1: 对称性——齐次性（奇对称），a的反对称
 TEST(FluxTest, MirrorSymmetry) {
-    EXPECT_NEAR(csr::rusanov_flux(0.8, 0.3, 1.0),
-                -csr::rusanov_flux(0.8, 0.3, -1.0), 1e-15);
+    EXPECT_NEAR(csr::rusanov_flux(0.3, 0.8, -1.0),
+                -csr::rusanov_flux(0.8, 0.3, 1.0), 1e-15);
 }

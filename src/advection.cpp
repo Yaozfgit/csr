@@ -13,6 +13,8 @@ LinearAdvection::LinearAdvection(const Grid1D& g, double a,
     }
 
 void LinearAdvection::step(double dt) {
+    if (dt > dx_ / std::abs(a_))
+        throw std::invalid_argument("CFL violated: dt exceeds dx/|a|");
     // 第 1 阶段：算出所有 n 个界面通量（i 和 i+1 之间的界面记为 F[i]）
     std::vector<double> flux(n_);
     for (std::size_t i = 0; i < n_; ++i) {
