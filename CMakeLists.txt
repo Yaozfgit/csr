@@ -11,7 +11,7 @@ add_library(csr src/matrix.cpp
                 src/linalg.cpp 
                 src/grid.cpp
                 src/flux.cpp
-                src/advection.cpp)
+                src/advect1d.cpp)
 target_include_directories(csr PUBLIC include)
 
 #---GoogleTest (FetchContent 方式) ----

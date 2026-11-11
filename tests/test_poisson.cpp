@@ -5,28 +5,28 @@
 #include <cmath>
 
 //---三对角结果————小n时逐元素核对组装结果--
-TEST(PoissonTest, AssemblyTridiagonal) {
-    const std::size_t n = 4;
-    CSRMatrix A = build_poisson(n);
-    //手算：h=1/5
-    //对角线全为50，次对角线全部是-25，非零元数量nnz=2+3+3+2 =10
+TEST(PoissonTest, AssemblyTridiagonal) {    
+    Grid1D g(4);
+    CSRMatrix A = build_poisson(g);
+    //手算：h=1/4,1/h² = 16
+    //对角线全为32，次对角线全部是-16，非零元数量nnz=2+3+3+2 =10
     EXPECT_EQ(A.nnz(), 10u);
-    EXPECT_DOUBLE_EQ(A.at(0,0), 50.0);
-    EXPECT_DOUBLE_EQ(A.at(0,1), -25.0);
-    EXPECT_DOUBLE_EQ(A.at(2,1), -25.0);
-    EXPECT_DOUBLE_EQ(A.at(3,3), 50.0);
-    EXPECT_DOUBLE_EQ(A.at(0,3), 0.0);
+    EXPECT_DOUBLE_EQ(A.at(0,0), 48.0);
+    EXPECT_DOUBLE_EQ(A.at(1,1), 32.0);
+    EXPECT_DOUBLE_EQ(A.at(3,3), 48.0); 
+    EXPECT_DOUBLE_EQ(A.at(0,1), -16.0);   
 }
 
 //A2:差分算子作用于精确解解采样与f相同，解析解的对拍
 TEST(PoissonTest, OperatorOnExactSolution) {
-    const std::size_t n = 100;
-    CSRMatrix A = build_poisson(n);
+    Grid1D g(100);
+    CSRMatrix A = build_poisson(g);
+    const std::size_t n = g.n_interior();
     std::vector<double> u(n), f(n);
     for (std::size_t i=0; i<n; ++i) {
-        double x = static_cast<double>(i+1)/(n+1);
-        u[i] = std::sin(M_PI * x);
-        f[i] = M_PI * M_PI* std::sin(M_PI*x);
+        std::vector<double> xs = g.interior_points();
+        u[i] = std::sin(M_PI * xs[i]);
+        f[i] = M_PI * M_PI* std::sin(M_PI*xs[i]);
     }
     auto r = A.multiply(u);
     for (std::size_t i = 0; i<n; ++i)
@@ -72,24 +72,23 @@ TEST(LinalgTest, ResidualSmall) {
 
 //C：端到端 —— 组装、设右端项、求解、与精确解比对
 TEST(PoissonTest, SolvePoisson) {
-    const std::size_t n= 100;
-    CSRMatrix A_csr = build_poisson(n);
+    Grid1D g(100);
+    const std::size_t n = g.n_interior();
+    CSRMatrix A_csr = build_poisson(g);
     Matrix A_dense(n);    //CSR→dense之间转换
     for (std::size_t i = 0; i < n; ++i)
         for (std::size_t j = 0; j<n; ++j)
             A_dense(i,j) = A_csr.at(i,j);
 
+    std::vector<double> xs = g.interior_points();
     std::vector<double> b(n);
-    for (std::size_t i = 0; i < n; ++i) {
-        double x = static_cast<double>(i+1)/(n+1);
-        b[i] = M_PI*M_PI*std::sin(M_PI*x);
-    }
+    for (std::size_t i = 0; i < n; ++i)         
+        b[i] = M_PI*M_PI*std::sin(M_PI*xs[i]);
+    
     auto u = gauss_solve(A_dense, b);
     
     double max_err = 0.0;
-    for (std::size_t i = 0; i < n; ++i) {
-        double x = static_cast<double>(i+1)/(n+1);
-        max_err = std::max(max_err, std::abs(u[i]-std::sin(M_PI*x)));
-    }
-    EXPECT_LT(max_err, 1e-2);  //h=0.01，那么差分误差O(h^2)=1e-4量级
+    for (std::size_t i = 0; i < n; ++i)         
+        max_err = std::max(max_err, std::abs(u[i]-std::sin(M_PI*xs[i])));    
+    EXPECT_LT(max_err, 1e-2);  //h = 1/100 = 0.01，O(h²) ≈ 1e-4 量级，余量充足
 }

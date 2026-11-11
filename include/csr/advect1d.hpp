@@ -10,10 +10,13 @@ namespace csr {
         void step(double dt);  //推进一个时间步
         const std::vector<double>& solution() const; // { return u_; }  //只读访问
         std::size_t n() const; // { return n_; }   //内部点数
+        std::vector<double> slopes(const std::vector<double>& u) const;
+        std::vector<double> compute_rhs(const std::vector<double>& u) const;
     private:
         std::size_t n_;
         double a_;
         double dx_;
         std::vector<double> u_;   //内部边上的解，边界用周期条件补充
+        Grid1D grid_;
     };
 }

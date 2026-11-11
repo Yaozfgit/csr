@@ -9,7 +9,7 @@ namespace {
     //解poisson方程并返回最大误差 max [u_h - sin(pi*x)]
     double poisson_max_error(std::size_t n) {
         Grid1D g(n);
-        CSRMatrix A_csr = build_poisson(n);
+        CSRMatrix A_csr = build_poisson(g);
         Matrix A_dense(n);
         for (std::size_t i = 0; i<n; ++i)
             for (std::size_t j = 0; j<n; ++j)
@@ -26,13 +26,11 @@ namespace {
     return max_err;
 }
 }
-
 //C1:单点误差量级合理
 TEST(ConvergenceTest, ErrorMagnitude) {
     double e100 = poisson_max_error(100);
     EXPECT_LT(e100, 1e-3);
 }
-
 //C2：核心测试——实测收敛阶数为2左右
 TEST(ConvergenceTest,SecondOrderConvergence) {
     std::size_t n = 16;
@@ -45,7 +43,6 @@ TEST(ConvergenceTest,SecondOrderConvergence) {
         prev = curr;
     }
 }
-
 //C3:观察数据——打印表格，肉眼看收敛（顺手输出，不是断言）
 TEST(ConvergenceTest,ConvergenceTable) {
     std::size_t n = 8;
