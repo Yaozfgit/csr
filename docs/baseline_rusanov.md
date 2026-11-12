@@ -24,3 +24,8 @@ n=   16 err=3.203e-03 order=1.987
 n=   32 err=8.026e-04 order=1.997
 n=   64 err=2.008e-04 order=1.999
 n=  128 err=5.020e-05 order=2.000
+
+自身比较（加密网格）
+n=50 self_err=1.31436e-07
+n=100 self_err=3.19507e-08 order=2.04044
+n=200 self_err=7.52862e-09 order=2.08539

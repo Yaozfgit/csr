@@ -11,7 +11,8 @@ add_library(csr src/matrix.cpp
                 src/linalg.cpp 
                 src/grid.cpp
                 src/flux.cpp
-                src/advect1d.cpp)
+                src/advect1d.cpp
+                src/burgers.cpp)
 target_include_directories(csr PUBLIC include)
 
 #---GoogleTest (FetchContent 方式) ----
@@ -55,6 +56,10 @@ add_test(NAME flux_tests COMMAND test_flux)
 add_executable(test_advection tests/test_advection.cpp)
 target_link_libraries(test_advection PRIVATE csr GTest::gtest_main)
 add_test(NAME advection_tests COMMAND test_advection)
+
+add_executable(test_burgers tests/test_burgers.cpp)
+target_link_libraries(test_burgers PRIVATE csr GTest::gtest_main)
+add_test(NAME burgers_tests COMMAND test_burgers)
 
 add_executable(advect_demo drivers/advect_demo.cpp)
 target_link_libraries(advect_demo PRIVATE csr)
