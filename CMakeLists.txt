@@ -61,6 +61,10 @@ add_executable(test_burgers tests/test_burgers.cpp)
 target_link_libraries(test_burgers PRIVATE csr GTest::gtest_main)
 add_test(NAME burgers_tests COMMAND test_burgers)
 
+add_executable(test_thomas tests/test_thomas.cpp)
+target_link_libraries(test_thomas PRIVATE csr GTest::gtest_main)
+add_test(NAME thomas_tests COMMAND test_thomas)
+
 add_executable(advect_demo drivers/advect_demo.cpp)
 target_link_libraries(advect_demo PRIVATE csr)
 
@@ -71,4 +75,5 @@ gtest_discover_tests(test_matrix
                      test_convergence
                      test_grid
                      test_flux
-                     test_advection)
+                     test_advection
+                     test_thomas)

@@ -3,6 +3,7 @@
 #include <csr/linalg.hpp>
 #include <csr/matrix.hpp>
 #include <csr/csr_matrix.hpp>
+#include <csr/thomas.hpp>
 
 BurgersSolver::BurgersSolver(const Grid1D& g, double nu)
     : g_(g), nu_(nu), n_(g.n_interior()) {}
@@ -39,22 +40,15 @@ std::vector<double> BurgersSolver::convection_rhs(const std::vector<double>& u) 
 
 std::vector<double> BurgersSolver::step(const std::vector<double>& u, double dt) const {
     std::vector<double> rhs = convection_rhs(u);
+
     std::vector<double> b(n_);
     for (std::size_t i = 0; i < n_; ++i)
-        b[i] = u[i] + dt * rhs[i];          // 对流部分已显式算完
-        //b[i] = u[i];
+        b[i] = u[i] + dt * rhs[i];        // 对流部分已显式算完   
 
-    CSRMatrix M(n_);
-    const double h2dt = nu_ * dt / (g_.h()*g_.h());
-    for (std::size_t i = 0; i < n_; ++i) {
-        const double diag = (i==0 || i==n_-1) ? 1.0 + 3.0*h2dt : 1.0 + 2.0*h2dt;
-        if (i > 0)     M.insert(i, i-1, -h2dt);
-        M.insert(i, i, diag);
-        if (i+1 < n_)  M.insert(i, i+1, -h2dt);
-    }
-    // 密集高斯消元起步（n 小），后面换 Thomas 算法
-    Matrix Md(n_); std::vector<double> bd(n_);
-    for (std::size_t i=0;i<n_;++i){ bd[i]=b[i];
-        for(std::size_t j=0;j<n_;++j) Md(i,j)=M.at(i,j); }
-    return gauss_solve(Md, bd);
+    const double r = nu_*dt/(g_.h()*g_.h());
+    std::vector<double> lower(n_,-r), diag(n_,1.0+2.0*r), upper(n_,-r);
+    diag[0] = diag[n_-1] = 1.0 + 3.0*r;   // 边界系数，按上次说的复刻
+    lower[0] = 0.0; upper[n_-1] = 0.0;
+
+    return thomas_solve(lower, diag, upper, b);      
 }

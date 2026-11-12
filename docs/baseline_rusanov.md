@@ -29,3 +29,6 @@ n=  128 err=5.020e-05 order=2.000
 n=50 self_err=1.31436e-07
 n=100 self_err=3.19507e-08 order=2.04044
 n=200 self_err=7.52862e-09 order=2.08539
+
+n=50/100 self_err=1.31436e-07
+n=80/160 self_err=6.0971e-08
