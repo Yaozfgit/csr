@@ -2,7 +2,6 @@
 #include <csr/grid.hpp>
 #include <csr/linalg.hpp>
 #include <csr/matrix.hpp>
-#include <csr/csr_matrix.hpp>
 #include <csr/thomas.hpp>
 
 BurgersSolver::BurgersSolver(const Grid1D& g, double nu)
@@ -46,9 +45,17 @@ std::vector<double> BurgersSolver::step(const std::vector<double>& u, double dt)
         b[i] = u[i] + dt * rhs[i];        // 对流部分已显式算完   
 
     const double r = nu_*dt/(g_.h()*g_.h());
+
     std::vector<double> lower(n_,-r), diag(n_,1.0+2.0*r), upper(n_,-r);
-    diag[0] = diag[n_-1] = 1.0 + 3.0*r;   // 边界系数，按上次说的复刻
-    lower[0] = 0.0; upper[n_-1] = 0.0;
+
+    for (int i = 0; i < n; ++i) {
+        if (i == 0 || i == n - 1) {
+        diag[i] = 1.0 + 3.0 * r;   // 边界行：复刻原 CSR 的边界离散
+        } else {
+            diag[i] = 1.0 + 2.0 * r;   // 内部行
+        }
+    }
+    lower[0] = 0.0; upper[n -1] = 0.0;
 
     return thomas_solve(lower, diag, upper, b);      
 }
