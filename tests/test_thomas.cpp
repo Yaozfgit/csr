@@ -20,7 +20,7 @@ std::vector<double> assemble_b(const std::vector<double>& a,
     return b;
 }
 
-}  // namespace
+}  // namespace 命名空间
 
 TEST(ThomasTest, Tiny2x2) {
     const std::size_t n = 2;
