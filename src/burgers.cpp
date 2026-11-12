@@ -48,6 +48,8 @@ std::vector<double> BurgersSolver::step(const std::vector<double>& u, double dt)
 
     std::vector<double> lower(n_,-r), diag(n_,1.0+2.0*r), upper(n_,-r);
 
+    const std::size_t n = u.size();
+
     for (int i = 0; i < n; ++i) {
         if (i == 0 || i == n - 1) {
         diag[i] = 1.0 + 3.0 * r;   // 边界行：复刻原 CSR 的边界离散
